@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     # Case 1 : low noise -> short impulse
     An = 0.2
-    Noise = np.random.rand(*X0.shape) - 0.5
+    Noise = (np.random.rand(*X0.shape) - 0.5) * An
     X1 = X0 + Noise
     plt.subplot(323)
     plt.plot(TIME, X1)
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     # Case 2 : high noise -> long impulse
     An = 0.5
-    Noise = np.random.rand(*X0.shape) - 0.5
+    Noise = (np.random.rand(*X0.shape) - 0.5) * An
     X2 = X0 + Noise
     plt.subplot(325)
     plt.plot(TIME, X2)
