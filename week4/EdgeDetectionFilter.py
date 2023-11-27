@@ -7,8 +7,8 @@ if __name__ == "__main__":
     TIME = np.arange(-30, 101, 1)
     OFFSET1 = 30
     X0 = np.zeros_like(TIME)
-    X0[-10+OFFSET1:21+OFFSET1] = 1
-    X0[50+OFFSET1:81+OFFSET1] = 1
+    X0[-10 + OFFSET1 : 21 + OFFSET1] = 1
+    X0[50 + OFFSET1 : 81 + OFFSET1] = 1
     plt.subplot(331)
     plt.plot(TIME, X0)
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     plt.subplot(338)
     plt.plot(TIME, Y2S)
 
-    Y2L = Filter(X2, LONGSIGMA,LONGLENGTH)
+    Y2L = Filter(X2, LONGSIGMA, LONGLENGTH)
     plt.subplot(339)
     plt.plot(TIME, Y2L)
 

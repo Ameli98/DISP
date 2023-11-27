@@ -12,7 +12,6 @@ if __name__ == "__main__":
     SHORTSIGMA, SHORTLENGTH = 0.8, 4
     LONGSIGMA, LONGLENGTH = 0.4, 10
 
-
     # Case 1: Low noise
     An = 2
     Noise = (np.random.rand(*X0.shape) - 0.5) * An
