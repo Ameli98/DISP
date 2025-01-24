@@ -10,7 +10,7 @@ A libary of basic signal process tool, inculding:
 7. Bilinear interpolation and Harris corner detector (week9)
 8. Affine transform and bilateral filter (week10)
 ## Requirement
-This libary uses numpy, cv2, matplotlib and scipy and has tested on python 3.12.3.
+This libary uses numpy, cv2, matplotlib and scipy and has been tested on python 3.12.3.
 
 Test environment:
 ```
