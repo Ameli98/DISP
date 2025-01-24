@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 
 
 def EroDila(Image: np.array, Dila: bool = False) -> np.array:
@@ -55,7 +56,11 @@ def Opening(Image: np.array, times: int = 3) -> np.array:
 
 
 if __name__ == "__main__":
-    Image = cv2.imread("Lena.png")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath", type = str)
+    args = parser.parse_args()
+
+    Image = cv2.imread(args.ImagePath)
     Image = cv2.cvtColor(Image, cv2.COLOR_BGR2GRAY).astype("float16")
 
     Image1 = np.concatenate((EroDila(Image), EroDila(Image, True)), axis=1)

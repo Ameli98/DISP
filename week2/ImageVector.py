@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from math import log10, sqrt
+import argparse
 
 
 def InnerProduct(x: np.array, y: np.array) -> float:
@@ -68,8 +69,12 @@ def DSSIM(
 
 
 if __name__ == "__main__":
-    image1 = cv2.imread("peppers256.bmp").astype("float16")
-    image2 = cv2.imread("Peppers.png").astype("float16")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath1", type = str)
+    parser.add_argument("ImagePath2", type = str)
+    args = parser.parse_args()
+    image1 = cv2.imread(args.ImagePath1).astype("float16")
+    image2 = cv2.imread(args.ImagePath2).astype("float16")
     print(f"MSE = {MSE(image1, image2)}")
     print(f"NRMSE = {NRMSE(image1, image2)}")
     print(f"PSNR = {PSNR(image1, image2)}")

@@ -2,11 +2,10 @@ from scipy.fft import fft2, ifft2
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import argparse
 
 
-def Fusion(
-    LowFreqImage: np.array, HighFreqImage: np.array, ThresholdRatio: float
-) -> np.array:
+def Fusion(LowFreqImage: np.array, HighFreqImage: np.array, ThresholdRatio: float) -> np.array:
     assert LowFreqImage.shape == HighFreqImage.shape
     assert LowFreqImage.ndim == 2
     assert LowFreqImage.shape[0] == LowFreqImage.shape[1]
@@ -34,9 +33,13 @@ def Fusion(
 
 
 if __name__ == "__main__":
-    image1 = cv2.imread("Lena.png")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath1", type = str)
+    parser.add_argument("ImagePath2", type = str)
+    args = parser.parse_args()
+    image1 = cv2.imread(args.ImagePath1)
     image1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY).astype("float16")
-    image2 = cv2.imread("Barbara.png")
+    image2 = cv2.imread(args.ImagePath2)
     image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY).astype("float16")
 
     result = Fusion(image1, image2, 1 / 30)

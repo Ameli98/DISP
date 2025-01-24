@@ -2,6 +2,7 @@ from scipy.fft import fft2, ifft2
 from scipy.signal import convolve2d as conv2d
 import numpy as np
 import cv2
+import argparse
 
 
 def Equalizer(BlurImage: np.array, Mask: np.array, CONST: float) -> np.array:
@@ -24,8 +25,11 @@ def Equalizer(BlurImage: np.array, Mask: np.array, CONST: float) -> np.array:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath", type = str)
+    args = parser.parse_args()
     # Make image blurred
-    Image = cv2.imread("Lena.png")
+    Image = cv2.imread(args.ImagePath)
     Image = cv2.cvtColor(Image, cv2.COLOR_BGR2GRAY).astype("float16")
 
     Mask = [np.arange(-10, 11).reshape(1, 21) ** 2 for i in range(21)]
@@ -51,9 +55,7 @@ if __name__ == "__main__":
     BlurImages = np.concatenate((BlurImage1, BlurImage2), axis=1)
     RecoverImagesa = np.concatenate((RecoverImage1a, RecoverImage2a), axis=1)
     RecoverImagesb = np.concatenate((RecoverImage1b, RecoverImage2b), axis=1)
-    Result = np.concatenate(
-        (BlurImages, RecoverImagesa, RecoverImagesb), axis=0
-    ).astype("uint8")
+    Result = np.concatenate((BlurImages, RecoverImagesa, RecoverImagesb), axis=0).astype("uint8")
 
     cv2.imshow("Recover Image", Result)
     cv2.waitKey(0)

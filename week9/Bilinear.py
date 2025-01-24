@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import argparse
 
 
 class Bilinear:
@@ -33,13 +34,22 @@ class Bilinear:
                         + a * b * Input[m0 + 1, n0 + 1, k]
                     )
 
-        Output = Output.astype("uint8")
-        cv2.imshow("Bilinear result", Output)
+        self.Image = Output.astype("uint8")
+        cv2.imshow("Bilinear result", self.Image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
+    def SaveImage(self, FileName, FileExtension = "png") -> None:
+        cv2.imwrite(FileName + "." + FileExtension, self.Image)
+
 
 if __name__ == "__main__":
-    Image = cv2.imread("Lena.png")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath", type = str)
+    parser.add_argument("SavePath", type = str)
+    args = parser.parse_args()
+
+    Image = cv2.imread(args.ImagePath)
     Image = Image.astype("float16")
-    Bilinear(Image, 1.5, 1.6)
+    Interpolator = Bilinear(Image, 2, 2)
+    Interpolator.SaveImage("Yuyuko")

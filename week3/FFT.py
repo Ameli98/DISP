@@ -2,10 +2,14 @@ import wave
 import numpy as np
 from scipy.fft import fft
 import matplotlib.pyplot as plt
+import argparse
 
 
 if __name__ == "__main__":
-    Wavefile = wave.open("SoundEffect.wav", "rb")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("AudioPath", type = str)
+    args = parser.parse_args()
+    Wavefile = wave.open(args.AudioPath, "rb")
     LENGTH = Wavefile.getnframes()
     Frame = Wavefile.readframes(LENGTH)
     Audio = np.frombuffer(Frame, dtype=np.int16)

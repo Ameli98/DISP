@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import argparse
 
 
 class AffineTransformer:
@@ -14,7 +15,7 @@ class AffineTransformer:
 
     def Bilinear3D(self, Position: np.array) -> np.array:
         x, y = Position[0], Position[1]
-        m, n = int(np.ceil(x)), int(np.ceil(y))
+        m, n = int(np.ceil(x).item()), int(np.ceil(y).item())
         a, b = x - m, y - n
 
         def Interpolate(channel) -> np.array:
@@ -25,9 +26,8 @@ class AffineTransformer:
                 + a * b * self.Input[m + 1, n + 1, channel]
             )
 
-        Pixel = np.array([Interpolate(k) for k in range(self.Input.shape[2])]).reshape(
-            self.Input.shape[2]
-        )
+        Pixel = np.array([Interpolate(k) for k in range(self.Input.shape[2])]).reshape(self.Input.shape[2])
+        
         return Pixel
 
     def InRange(self, Position: np.array) -> bool:
@@ -55,9 +55,8 @@ class AffineTransformer:
                     Output[i, j] = self.Bilinear3D(Position)
         return Output
 
-    def Sheer(
-        self, CenterX: int, CenterY: int, ZetaX: float = 0, ZetaY: float = 0
-    ) -> np.array:
+    def Sheer(self, CenterX: int, CenterY: int, ZetaX: float = 0, ZetaY: float = 0) -> np.array:
+        
         Output = np.zeros_like(Image, dtype="uint8")
         Transform = np.array([[1, ZetaY], [ZetaX, 1]])
         Transform = np.linalg.inv(Transform)
@@ -72,12 +71,18 @@ class AffineTransformer:
 
 
 if __name__ == "__main__":
-    Image = cv2.imread("Lena.png")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath", type = str)
+    args = parser.parse_args()
+
+    Image = cv2.imread(args.ImagePath)
     Image = Image.astype("float16")
+
     Affine = AffineTransformer(Image)
     Rotated = Affine.Rotate(30, Image.shape[0] // 2, Image.shape[1] // 2)
     Sheered = Affine.Sheer(Image.shape[0] // 2, Image.shape[1] // 2, ZetaX=0.3)
     Result = np.concatenate((Rotated, Sheered), axis=0)
+
     cv2.imshow("Result", Result)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

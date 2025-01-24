@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-
+import argparse
 
 class EdgeDetector:
     def __init__(self, ImagePath: str):
@@ -8,6 +8,7 @@ class EdgeDetector:
 
         mode = input("Choose mode: 'Simple', 'Sobel', or 'Laplacian'.\n")
         self.operator = None
+        assert mode in ["Simple", "Sobel", "Laplacian"]
 
         if mode == "Simple":
             self.direction = input(
@@ -19,6 +20,7 @@ class EdgeDetector:
             self.direction = input(
                 "Choose direction: 'H' for horizontal, 'V' for Vertical', and 'D' for diagonal.\n"
             )
+            assert self.direction in ["H", "V", "D"]
             if self.direction == "H":
                 self.operator = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]) / 4
             elif self.direction == "V":
@@ -67,4 +69,7 @@ class EdgeDetector:
 
 
 if __name__ == "__main__":
-    ImageEdge = EdgeDetector("004.BMP")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath", type = str)
+    args = parser.parse_args()
+    ImageEdge = EdgeDetector(args.ImagePath)

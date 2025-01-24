@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import ctypes as ct
 
 
 def Bilateral(Signal: np.array, k1: float, k2: float, L: int) -> np.array:
@@ -46,21 +45,6 @@ if __name__ == "__main__":
     # Filter
     k1, k2, L = 0.1, 5, 3
     Z = Bilateral(Y, k1, k2, L)
-
-    # Load C code
-    dll = ct.cdll.LoadLibrary("Bilateral.dll")
-    dll.Bilateral.argtypes = (
-        np.ctypeslib.ndpointer(),
-        ct.c_size_t,
-        ct.c_double,
-        ct.c_double,
-        ct.c_int,
-    )
-    dll.Bilateral.restype = None
-
-    # Filter by C
-    W = np.copy(Y)
-    dll.Bilateral(W, W.size, k1, k2, L)
 
     # Plot
     TIME = np.arange(100)

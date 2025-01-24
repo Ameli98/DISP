@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from numpy.linalg import inv
+import argparse
 
 
 class LightAdjuster:
@@ -19,9 +20,7 @@ class LightAdjuster:
         # YCbCr to BGR
         self.BGRImage = np.tensordot(self.YImage, inv(self.BGR2YTransform), ((2), (1)))
         self.BGRImage = np.clip(self.BGRImage, 0, 255).astype("uint8")
-        # print(inv(self.BGR2YTransform) @ self.YImage[0,0,:])
-        # print(inv(self.BGR2YTransform) @ np.array([43.5, 84.405, 106.84]))
-        # print(self.BGRImage[0,0])
+
 
         cv2.imshow("Lighten / Darken", self.BGRImage)
         cv2.waitKey(0)
@@ -34,4 +33,7 @@ class LightAdjuster:
 
 
 if __name__ == "__main__":
-    Picture = LightAdjuster("Lena256c.BMP", 2)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ImagePath", type = str)
+    args = parser.parse_args()
+    Picture = LightAdjuster(args.ImagePath, 2)
